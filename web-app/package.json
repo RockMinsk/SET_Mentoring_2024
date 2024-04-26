@@ -4,7 +4,7 @@
     "description": "Software Engineering in Test Global Mentoring Program: Advanced #2. Web application.",
     "main": "dist/server.js",
     "scripts": {
-      "build": "tsd",
+      "build": "npx tsc",
       "start": "node dist/server.js",
       "test": "npm run test"
     },

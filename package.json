@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "description": "Software Engineering in Test Global Mentoring Program: Advanced #2",
   "scripts": {
-    "build:web": "cd web-app && tsc",
     "install:web": "cd web-app && npm install",
     "install:func": "cd function-app && npm install",
     "install": "npm run install:web && npm run install:func",
+    "build:web": "cd web-app && npx tsc",
+    "prestart:web": "npm run build:web",
     "start:web": "node web-app/dist/server.js",
     "start:func": "cd function-app && func start",
     "start": "concurrently \"npm run start:web\" \"npm run start:func\"",

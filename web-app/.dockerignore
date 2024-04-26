@@ -4,5 +4,4 @@ node_modules/
 dist/
 tmp/
 
-**/.env
-**/local.settings.json
+.env
