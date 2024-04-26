@@ -13,8 +13,6 @@ import 'dotenv/config';
 
 const pipelineAsync = promisify(pipeline);
 
-const ONE_MEGABYTE = 1024 * 1024;
-const FOUR_MEGABYTES = 4 * ONE_MEGABYTE;
 const ONE_MINUTE = 60 * 1000;
 
 export class ImageStorageClient {

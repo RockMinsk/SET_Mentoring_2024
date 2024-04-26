@@ -1,0 +1,18 @@
+{
+    "name": "mentoring-set-function-app",
+    "version": "1.0.0",
+    "description": "Software Engineering in Test Global Mentoring Program: Advanced #2. Function application",
+    "main": "functions/index.js",
+    "scripts": {
+        "start": "func start",
+        "test": "npm test"
+    },
+    "author": "Kiryl Shytsikau",
+    "license": "ISC",
+    "dependencies": {
+        "@azure-rest/ai-vision-image-analysis": "^1.0.0-beta.2",
+        "@azure/core-auth": "^1.7.2",
+        "@azure/functions": "^4.4.0",
+        "dotenv": "^16.4.5"
+    }
+}

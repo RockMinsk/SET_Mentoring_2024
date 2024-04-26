@@ -1,7 +1,7 @@
 import { CosmosClient, Container } from '@azure/cosmos';
 import { Image } from '../models/Image';
-import 'dotenv/config';
 import { logger } from '../helpers/loggerConfig';
+import 'dotenv/config';
 
 export class ImageDatabaseClient {
     private container!: Container;
