@@ -70,6 +70,19 @@ export class ImageDatabaseClient {
         }
     }
 
+    public async getTagsForImage(objectPath: string): Promise<string[]> {
+        const querySpecification = {
+            query: `SELECT c.labels FROM c WHERE c.objectPath = @objectPath`,
+            parameters: [
+                { name: "@objectPath", value: objectPath }
+            ]
+        };
+    
+        const { resources } = await this.container.items.query(querySpecification).fetchNext();
+        const labels = resources[0]?.labels || [];  
+        return labels;
+    }
+
     public async read(id: number): Promise<Image|undefined|null> {
         try {
             const { resource } = await this.container.item(id.toString()).read<Image>();

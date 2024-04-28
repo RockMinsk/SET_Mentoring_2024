@@ -75,9 +75,14 @@ function addImageElement(imageUrl) {
         document.getElementById("images").appendChild(img);
     };
 
-    img.onclick = function () {
+    img.onclick = async function () {
         var modal = new bootstrap.Modal(document.getElementById('imageModal'));
         document.getElementById('modalImage').src = imageUrl;
+
+        const encodedImageUrl = encodeURIComponent(imageUrl);
+        let tags = await fetch(`/api/images/${encodedImageUrl}/tags`).then(res => res.json());
+        document.getElementById('imageTags').innerHTML = "Tags: " + tags.join(', ');
+
         modal.show()
     };
 

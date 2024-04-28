@@ -59,6 +59,11 @@ class ImageService {
         return this.dbClient.getImagesByLabel(label);
     }
 
+    public async getTagsForImage(imageUrl: string): Promise<any> {
+        const objectPath: string = imageUrl.split('?')[0];
+        return this.dbClient.getTagsForImage(objectPath);
+    }
+
     public async delete(imageUrl: string): Promise<any> {
         const objectPath: string = imageUrl.split('?')[0];
         return Promise.all([

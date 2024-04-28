@@ -36,6 +36,17 @@ app.get('/api/images/search', async (req: Request, res: Response) => {
     res.json(images);
 });
 
+app.get('/api/images/:imageUrl/tags', async (req: Request, res: Response) => {
+    const imageUrl = decodeURIComponent(req.params.imageUrl); 
+
+    try {
+        const tags = await imageService.getTagsForImage(imageUrl);
+        res.json(tags);
+    } catch (error) {
+        res.status(500).json({ error: 'Error getting tags for image' });
+    }
+});
+
 app.post('/api/upload', upload.single('image'), async (req: Request, res: Response) => {
     let file = req.file;
     if (!file) {
