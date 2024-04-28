@@ -1,6 +1,5 @@
 .idea/
 node_modules/
 dist/
-tmp/
-public/
-src/web-app/
+
+local.settings.json

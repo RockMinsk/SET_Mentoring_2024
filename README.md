@@ -40,7 +40,6 @@ npm run start
     - App Service;
     - Function App;
 
-
 2. **Build docker image locally**
 ```bash
  docker build --tag <IMAGE_NAME> .

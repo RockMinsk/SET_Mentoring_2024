@@ -14,6 +14,7 @@ const features = ['Caption','Tags'];
 
 async function analyzeImageFromUrl(imageUrl) {
     try {
+        let tags = [];
         const result = await client.path('/imageanalysis:analyze').post({
             body: {
                 url: imageUrl
@@ -29,9 +30,10 @@ async function analyzeImageFromUrl(imageUrl) {
 
         if (iaResult.tagsResult) {
             const tagsResult = iaResult.tagsResult;
-            const tags = tagsResult.values.filter(tag => tag.confidence > 0.9).map(tag => tag.name);
+            tags = tagsResult.values.filter(tag => tag.confidence > 0.9).map(tag => tag.name);
             console.log("Image analysis result (tags):", tags);
         }
+        return tags;
     }
     catch (error) {
         console.error("Error:", error);

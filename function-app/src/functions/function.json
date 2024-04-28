@@ -10,5 +10,5 @@
 			"connection": "servicebuswebapi1_SERVICEBUS"
 		}
 	],
-	"scriptFile": "index.js"
+	"scriptFile": "imageAnalysis.js"
 }

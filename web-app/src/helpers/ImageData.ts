@@ -9,7 +9,7 @@ export class ImageData {
 	
 		const image: Image = {
 			id: imageId,
-			objectPath: file.originalname,
+			objectPath: `https://${process.env.AZURE_STORAGE_ACCOUNT_NAME}.blob.core.windows.net/${process.env.AZURE_STORAGE_CONTAINER_NAME}/${file.originalname}`,
 			objectSize: this.bytesToSize(file.size),
 			timeAdded: new Date(),
 			timeUpdated: new Date(),

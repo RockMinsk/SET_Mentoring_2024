@@ -12,8 +12,12 @@ const port = process.env.PORT || 3000;
 app.use(express.static(path.join(__dirname, '../public')));
 app.use('/dist', express.static(path.join(__dirname, '../dist')));
 
-app.get('/api/images', async (req: Request, res: Response) => {
+app.use(async (req, res, next) => {
     await imageService.initialize();
+    next();
+});
+
+app.get('/api/images', async (req: Request, res: Response) => {
     let images = await imageService.getAll();
     res.json(images);
 });

@@ -27,7 +27,7 @@ export class ImageDatabaseClient {
         });
         const { container } = await database.containers.createIfNotExists({
             id: process.env.AZURE_COSMOS_DB_CONTAINER_ID!,
-            partitionKey: { paths: ['/id']}
+            partitionKey: { paths: ['/id'] }
         });
 
         dbClientInstance.container = container;

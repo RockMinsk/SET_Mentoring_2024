@@ -4,6 +4,7 @@ import { ImageData } from '../helpers/ImageData';
 import { ImageStatus } from '../models/Image';
 import { ServiceBusMessage } from "@azure/service-bus";
 import { ServiceBusSenderClient } from './ServiceBusSenderClient';
+import { v4 as uuidv4 } from 'uuid';
 import { logger } from '../helpers/loggerConfig';
 import 'dotenv/config';
 
@@ -41,11 +42,10 @@ class ImageService {
         ])
 
         const message: ServiceBusMessage = {
-            messageId: image.id,
-            body: file.originalname
+            messageId: uuidv4(),
+            body: image
         };
-        logger.debug(`File uploaded: ${file.originalname}`);
-        logger.debug(`File uploaded2: ${JSON.stringify(message.body)}`);
+
         return this.serviceBusSenderClient.sendMessageToTopic(`${process.env.AZURE_SERVICE_BUS_TOPIC_NAME}`, message);
     }
 
