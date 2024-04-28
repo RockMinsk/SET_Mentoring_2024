@@ -54,7 +54,7 @@ class ImageService {
     }
 
     public async getAll(): Promise<any> {
-        return this.storageClient.getImages();
+        return this.dbClient.getImages();
     }
 
     public async delete(file: string): Promise<any> {
@@ -62,7 +62,7 @@ class ImageService {
     }
 
     public async search(label: string): Promise<any> {
-        // Implement your search logic here
+        return this.dbClient.getImagesByLabel(label);
     }
 }
 

@@ -22,11 +22,13 @@ async function updateItemLabels(id, newLabels) {
 
         if (newLabels) {
             currItem.labels = newLabels;
+            currItem.timeUpdated = new Date();
             currItem.status = 'recognition_completed';            
         } else {
+            currItem.timeUpdated = new Date();
             currItem.status = 'recognition_failed';
         }
-        
+
         const { resource: updatedItem } = await container.item(id, id).replace(currItem);
     
         return console.log(`Item "${updatedItem.id}" updated successfully by using labels: ${updatedItem.labels}.`);

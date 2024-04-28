@@ -41,6 +41,34 @@ export class ImageDatabaseClient {
         return resource?.id;
     }
 
+    public async getImages(): Promise<string[]> {
+        const querySpecification = {
+            query: `SELECT c.objectPath FROM c`
+        };
+        const { resources } = await this.container.items.query(querySpecification).fetchAll();
+        const objectPaths: string[] = resources.map(item => `${item.objectPath}?${process.env.AZURE_STORAGE_ACCOUNT_SHARED_ACCESS_TOKEN}` );
+        return objectPaths;
+    }
+
+    public async getImagesByLabel(label: string): Promise<string[]> {
+        if (!label) {
+            return this.getImages();
+        } else {
+            const querySpecification = {
+                query: `SELECT c.objectPath FROM c WHERE ARRAY_CONTAINS(c.labels, @label)`,
+                parameters: [
+                    {
+                        name: '@label',
+                        value: label 
+                    }
+                ]
+            };
+            const { resources } = await this.container.items.query(querySpecification).fetchAll();
+            const objectPaths: string[] = resources.map(item => `${item.objectPath}?${process.env.AZURE_STORAGE_ACCOUNT_SHARED_ACCESS_TOKEN}` );
+            return objectPaths;
+        }
+    }
+
     public async read(id: number): Promise<Image|undefined|null> {
         try {
             const { resource } = await this.container.item(id.toString()).read<Image>();

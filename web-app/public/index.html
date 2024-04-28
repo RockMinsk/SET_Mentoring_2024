@@ -7,13 +7,22 @@
 </head>
 
 <body>
-<input type="file" id="file-input" multiple accept="image/*" />
-<button onclick="window.upload()">Upload</button>
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+            <input type="file" id="file-input" multiple accept="image/*" />
+            <button onclick="window.upload()">Upload</button>
+        </div>
+        <div>
+            <input type="text" id="label-input" placeholder="Search by label" style="margin-left: 20px;" />
+            <button onclick="window.loadImagesByLabel(document.querySelector('#label-input').value)">Search</button>
+        </div>
+    </div>
 
-<h1>Uploaded Images:</h1>
-<div id="images"></div>
+    <h1>Uploaded Images:</h1>
 
-<script src="/app.js"></script>
+    <div id="images"></div>
+
+    <script src="/app.js"></script>
 </body>
 
 </html>

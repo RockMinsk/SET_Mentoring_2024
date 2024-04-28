@@ -22,6 +22,20 @@ app.get('/api/images', async (req: Request, res: Response) => {
     res.json(images);
 });
 
+app.get('/api/images/search', async (req: Request, res: Response) => {
+    const label = req.query.label;
+
+    if (typeof label !== 'string') {
+        res.status(400).json({
+            message: "Invalid label query parameter provided."
+        });
+        return;
+    }
+
+    const images = await imageService.search(label);
+    res.json(images);
+});
+
 app.post('/api/upload', upload.single('image'), async (req: Request, res: Response) => {
     let file = req.file;
     if (!file) {
