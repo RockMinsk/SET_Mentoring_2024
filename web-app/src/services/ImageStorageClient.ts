@@ -114,6 +114,17 @@ export class ImageStorageClient {
         await blockBlobClient.delete();
         logger.info(`File "${fileName}" deleted from the Azure Blob storage`);
     }
+
+    public async deleteAll(): Promise<void> {
+        const containerClient: ContainerClient = this.blobServiceClient.getContainerClient(`${process.env.AZURE_STORAGE_CONTAINER_NAME}`);
+
+        let blobs = containerClient.listBlobsFlat();
+
+        for await (let blob of blobs) {
+            await containerClient.deleteBlob(blob.name);
+            logger.info(`Blob "${blob.name}" deleted.`);
+        }
+    }
 }
 
 export default ImageStorageClient;

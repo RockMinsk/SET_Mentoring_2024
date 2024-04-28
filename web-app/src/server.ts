@@ -46,6 +46,10 @@ app.post('/api/upload', upload.single('image'), async (req: Request, res: Respon
     res.status(200).end();
 });
 
+app.delete('/api/deleteAll', (req: Request, res: Response) => {
+    imageService.deleteAll().then(() => res.sendStatus(200));
+});
+
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}/`);
 });

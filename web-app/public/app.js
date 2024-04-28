@@ -21,6 +21,11 @@ window.upload = async function() {
     fileInput.value = '';
 };
 
+window.removeAll = async function() {
+    await fetch('/api/deleteAll', { method: 'DELETE' });
+    loadImages();
+}
+
 async function loadImages() {
     let imageUrls = await fetch('/api/images').then(res => res.json());
 
@@ -29,8 +34,15 @@ async function loadImages() {
         imagesDiv.removeChild(imagesDiv.firstChild);
     }
 
-    for (let imageUrl of imageUrls){
-        addImageElement(imageUrl);
+    if (imageUrls.length === 0) {
+        let message = document.createElement("h3");
+        message.style.textAlign = "center";
+        message.innerText = "No images found";
+        imagesDiv.appendChild(message);
+    } else {
+        for (let imageUrl of imageUrls){
+            addImageElement(imageUrl);
+        }
     }
 };
 

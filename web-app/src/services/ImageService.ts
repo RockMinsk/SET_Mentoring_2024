@@ -56,13 +56,20 @@ class ImageService {
     public async getAll(): Promise<any> {
         return this.dbClient.getImages();
     }
+    
+    public async search(label: string): Promise<any> {
+        return this.dbClient.getImagesByLabel(label);
+    }
 
     public async delete(file: string): Promise<any> {
         return this.storageClient.delete(file);
     }
 
-    public async search(label: string): Promise<any> {
-        return this.dbClient.getImagesByLabel(label);
+    public async deleteAll(): Promise<any> {
+        return Promise.all([
+            this.dbClient.deleteAll(),
+            this.storageClient.deleteAll()
+        ]);
     }
 }
 

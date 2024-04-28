@@ -89,4 +89,17 @@ export class ImageDatabaseClient {
     public async delete(id: number): Promise<void> {
         await this.container.item(id.toString()).delete<Image>();
     }
+
+    public async deleteAll(): Promise<void> {
+        const { resources: items } = await this.container.items.readAll().fetchAll();
+
+        items.forEach(async (item) => {
+            if (item.id !== undefined) {
+                const { item: delItem } = await this.container.item(item.id, item.id).delete();
+                logger.info(`Item with id "${delItem.id}" deleted from Cosmos DB.`);
+            } else {
+                logger.error('Trying to delete an item without an id from Cosmos DB.');
+            }
+        });
+    }
 }

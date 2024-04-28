@@ -21,6 +21,18 @@ button:hover {
     background-color: #45a049; /* dark green */
 }
 
+.remove-button {
+    padding: 10px 20px;
+    background-color: red; /* make it red */
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+.remove-button:hover {
+    background-color: darkred; /* dark red when hovered */
+}
+
 #images {
     display: flex;
     flex-wrap: wrap;
