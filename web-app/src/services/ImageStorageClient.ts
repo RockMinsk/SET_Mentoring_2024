@@ -107,12 +107,17 @@ export class ImageStorageClient {
         return blobs;
     }
 
-    public async delete(fileName: string): Promise<void> {
-        const containerClient: ContainerClient = this.blobServiceClient.getContainerClient(`${process.env.AZURE_STORAGE_CONTAINER_NAME}`);
-        const blockBlobClient = containerClient.getBlockBlobClient(fileName);
-
-        await blockBlobClient.delete();
-        logger.info(`File "${fileName}" deleted from the Azure Blob storage`);
+    public async delete(fileUrl: string): Promise<void> {
+        const fileName: string|undefined = fileUrl.split('/').pop();
+        if (fileName) {
+            const containerClient: ContainerClient = this.blobServiceClient.getContainerClient(`${process.env.AZURE_STORAGE_CONTAINER_NAME}`);
+            const blockBlobClient = containerClient.getBlockBlobClient(fileName);
+    
+            await blockBlobClient.delete();
+            logger.info(`File "${fileName}" deleted from the Azure Blob storage`);
+        } else {
+            logger.error(`File "${fileName}" is not found in the Azure Blob storage.`);
+        }
     }
 
     public async deleteAll(): Promise<void> {

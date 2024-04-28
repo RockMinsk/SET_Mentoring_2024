@@ -1,31 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/styles.css">
 </head>
-
 <body>
-    <div style="display: flex; justify-content: space-between; align-items: center;">
-        <div>
-            <input type="file" id="file-input" multiple accept="image/*" />
-            <button onclick="window.upload()">Upload</button>
-        </div>
-        <div>
-            <input type="text" id="label-input" placeholder="Search by label" style="margin-left: 20px;" />
-            <button onclick="window.loadImagesByLabel(document.querySelector('#label-input').value)">Search</button>
-        </div>
-        <div>
-            <button class="remove-button" onclick="window.removeAll()">Remove all</button>
+<div style="display: flex; justify-content: space-between; align-items: center;">
+    <div>
+        <input type="file" id="file-input" multiple accept="image/*" />
+        <button onclick="window.upload()">Upload</button>
+    </div>
+    <div>
+        <input type="text" id="label-input" placeholder="Search by label" style="margin-left: 20px;" />
+        <button onclick="window.loadImagesByLabel(document.querySelector('#label-input').value)">Search</button>
+    </div>
+    <div>
+        <button class="remove-button" onclick="window.removeAll()">Delete all</button>
+    </div>
+</div>
+
+<h1>Uploaded Images:</h1>
+
+<div id="images"></div>
+
+<!-- The Bootstrap Modal -->
+<div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <img id="modalImage" src="" style="display: block; margin-top: 10px; width: 100%;" alt="Image"/>
+                <div id="imageTags" style="margin-top: 20px;"></div>
+                <button class="remove-button" style="margin-top: 20px;" onclick="deleteImage(document.getElementById('modalImage').src)">Delete</button>
+            </div>
         </div>
     </div>
+</div>
 
-    <h1>Uploaded Images:</h1>
-
-    <div id="images"></div>
-
-    <script src="/app.js"></script>
+<script src="/app.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </body>
-
 </html>

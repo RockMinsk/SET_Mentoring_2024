@@ -1,6 +1,7 @@
 import { CosmosClient, Container } from '@azure/cosmos';
 import { Image } from '../models/Image';
 import { logger } from '../helpers/loggerConfig';
+import { Logger } from 'winston';
 import 'dotenv/config';
 
 export class ImageDatabaseClient {
@@ -86,8 +87,20 @@ export class ImageDatabaseClient {
         await this.container.item(image.id.toString()).replace<Image>(image);
     }
 
-    public async delete(id: number): Promise<void> {
-        await this.container.item(id.toString()).delete<Image>();
+    public async delete(objectPath: string): Promise<void|Logger> {
+        const { resources: items } = await this.container.items.query({
+            query: "SELECT * from items i WHERE i.objectPath = @objectPath",
+            parameters: [{ name: "@objectPath", value: objectPath }]
+        }).fetchAll();
+    
+        if (items.length === 0) {
+            return logger.error(`No items found with objectPath: ${objectPath}`);
+        }
+        
+        const itemToDelete = items[0];
+    
+        const { item } = await this.container.item(itemToDelete.id, itemToDelete.id).delete();
+        return logger.info(`Item with id "${item.id}" deleted from Cosmos DB.`);
     }
 
     public async deleteAll(): Promise<void> {

@@ -34,8 +34,6 @@ class ImageService {
         if (!this.dbClient) throw new Error("Database client is not initialized.");
         const image = this.imageData.getImageFromFile(file, [], ImageStatus.NEW);
 
-        logger.error(`MESSAGE ID: ${image.id}`);
-
         await Promise.all([
             this.storageClient.create(file),
             this.dbClient.create(image)
@@ -61,8 +59,12 @@ class ImageService {
         return this.dbClient.getImagesByLabel(label);
     }
 
-    public async delete(file: string): Promise<any> {
-        return this.storageClient.delete(file);
+    public async delete(imageUrl: string): Promise<any> {
+        const objectPath: string = imageUrl.split('?')[0];
+        return Promise.all([
+            this.dbClient.delete(objectPath),
+            this.storageClient.delete(objectPath)
+        ]);
     }
 
     public async deleteAll(): Promise<any> {

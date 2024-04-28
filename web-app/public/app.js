@@ -68,14 +68,36 @@ async function loadImagesByLabel(label) {
 
 function addImageElement(imageUrl) {
     let img = document.createElement("img");
+
     img.onload = function () {
         img.style.height = "200px";
         img.style.width = "auto";
         document.getElementById("images").appendChild(img);
     };
+
+    img.onclick = function () {
+        var modal = new bootstrap.Modal(document.getElementById('imageModal'));
+        document.getElementById('modalImage').src = imageUrl;
+        modal.show()
+    };
+
     img.src = imageUrl;
     img.alt = 'Image';
-};
+
+    document.getElementById("images").appendChild(img);
+
+    img.style.cursor = 'pointer';
+}
+
+async function deleteImage(imageUrl) {
+    const response = await fetch(`/api/delete/${encodeURIComponent(imageUrl)}`, { method: 'DELETE' });
+
+    if (!response.ok) {
+        console.error('Image deletion failed: ', response);
+    } else {
+        location.reload();
+    }
+}
 
 document.querySelector('#label-input')
     .addEventListener('keypress', function (e) {

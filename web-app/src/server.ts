@@ -46,7 +46,18 @@ app.post('/api/upload', upload.single('image'), async (req: Request, res: Respon
     res.status(200).end();
 });
 
-app.delete('/api/deleteAll', (req: Request, res: Response) => {
+app.delete('/api/delete/:imageUrl', async (req: Request, res: Response) => {
+    const imageUrl = req.params.imageUrl;
+
+    try {
+        await imageService.delete(imageUrl);
+        res.sendStatus(200);
+    } catch (error) {
+        res.status(500).json({ error: 'Error deleting image' });
+    }
+});
+
+app.delete('/api/deleteAll', (req, res) => {
     imageService.deleteAll().then(() => res.sendStatus(200));
 });
 
