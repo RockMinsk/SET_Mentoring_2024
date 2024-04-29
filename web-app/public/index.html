@@ -31,7 +31,7 @@
             <div class="modal-body">
                 <img id="modalImage" src="" style="display: block; margin-top: 10px; width: 100%;" alt="Image"/>
                 <div id="imageTags" style="margin-top: 20px;"></div>
-                <button class="remove-button" style="margin-top: 20px;" onclick="deleteImage(document.getElementById('modalImage').src)">Delete</button>
+                <button class="remove-button" style="margin-top: 20px;" onclick="deleteImage(document.getElementById('modalImage').dataset.id)">Delete</button>
             </div>
         </div>
     </div>

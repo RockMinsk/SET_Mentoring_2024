@@ -44,11 +44,16 @@ export class ImageDatabaseClient {
 
     public async getImages(): Promise<string[]> {
         const querySpecification = {
-            query: `SELECT c.objectPath FROM c`
+            query: `SELECT c.id, c.objectPath FROM c`
         };
         const { resources } = await this.container.items.query(querySpecification).fetchAll();
-        const objectPaths: string[] = resources.map(item => `${item.objectPath}?${process.env.AZURE_STORAGE_ACCOUNT_SHARED_ACCESS_TOKEN}` );
-        return objectPaths;
+        const imageInfo: any[] = resources.map(item => {
+            return {
+                id: item.id,
+                url: `${item.objectPath}?${process.env.AZURE_STORAGE_ACCOUNT_SHARED_ACCESS_TOKEN}`
+            }  
+        });
+        return imageInfo;
     }
 
     public async getImagesByLabel(label: string): Promise<string[]> {
@@ -56,7 +61,7 @@ export class ImageDatabaseClient {
             return this.getImages();
         } else {
             const querySpecification = {
-                query: `SELECT c.objectPath FROM c WHERE ARRAY_CONTAINS(c.labels, @label)`,
+                query: `SELECT c.id, c.objectPath FROM c WHERE ARRAY_CONTAINS(c.labels, @label)`,
                 parameters: [
                     {
                         name: '@label',
@@ -65,22 +70,40 @@ export class ImageDatabaseClient {
                 ]
             };
             const { resources } = await this.container.items.query(querySpecification).fetchAll();
-            const objectPaths: string[] = resources.map(item => `${item.objectPath}?${process.env.AZURE_STORAGE_ACCOUNT_SHARED_ACCESS_TOKEN}` );
-            return objectPaths;
+            const imageInfo: any[] = resources.map(item => {
+                return {
+                    id: item.id,
+                    url: `${item.objectPath}?${process.env.AZURE_STORAGE_ACCOUNT_SHARED_ACCESS_TOKEN}`
+                }
+            });
+            return imageInfo;
         }
     }
 
-    public async getTagsForImage(objectPath: string): Promise<string[]> {
+    public async getTagsForImage(id: string): Promise<string[]> {
         const querySpecification = {
-            query: `SELECT c.labels FROM c WHERE c.objectPath = @objectPath`,
+            query: `SELECT c.labels FROM c WHERE c.id = @id`,
             parameters: [
-                { name: "@objectPath", value: objectPath }
+                { name: "@id", value: id }
             ]
         };
     
         const { resources } = await this.container.items.query(querySpecification).fetchNext();
         const labels = resources[0]?.labels || [];  
         return labels;
+    }
+
+    public async getImageNameById(id: string): Promise<string> {
+        const querySpecification = {
+            query: `SELECT c.objectPath FROM c WHERE c.id = @id`,
+            parameters: [
+                { name: "@id", value: id }
+            ]
+        };
+    
+        const { resources } = await this.container.items.query(querySpecification).fetchNext();
+        const fileName = resources[0]?.objectPath.split('/').pop() || [];  
+        return fileName;
     }
 
     public async read(id: number): Promise<Image|undefined|null> {
@@ -100,19 +123,8 @@ export class ImageDatabaseClient {
         await this.container.item(image.id.toString()).replace<Image>(image);
     }
 
-    public async delete(objectPath: string): Promise<void|Logger> {
-        const { resources: items } = await this.container.items.query({
-            query: "SELECT * from items i WHERE i.objectPath = @objectPath",
-            parameters: [{ name: "@objectPath", value: objectPath }]
-        }).fetchAll();
-    
-        if (items.length === 0) {
-            return logger.error(`No items found with objectPath: ${objectPath}`);
-        }
-        
-        const itemToDelete = items[0];
-    
-        const { item } = await this.container.item(itemToDelete.id, itemToDelete.id).delete();
+    public async delete(id: string): Promise<void|Logger> {   
+        const { item } = await this.container.item(id, id).delete();
         return logger.info(`Item with id "${item.id}" deleted from Cosmos DB.`);
     }
 

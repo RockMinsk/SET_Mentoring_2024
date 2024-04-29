@@ -36,11 +36,11 @@ app.get('/api/images/search', async (req: Request, res: Response) => {
     res.json(images);
 });
 
-app.get('/api/images/:imageUrl/tags', async (req: Request, res: Response) => {
-    const imageUrl = decodeURIComponent(req.params.imageUrl); 
+app.get('/api/images/:id/tags', async (req: Request, res: Response) => {
+    const id = req.params.id; 
 
     try {
-        const tags = await imageService.getTagsForImage(imageUrl);
+        const tags = await imageService.getTagsForImage(id);
         res.json(tags);
     } catch (error) {
         res.status(500).json({ error: 'Error getting tags for image' });
@@ -57,11 +57,11 @@ app.post('/api/upload', upload.single('image'), async (req: Request, res: Respon
     res.status(200).end();
 });
 
-app.delete('/api/delete/:imageUrl', async (req: Request, res: Response) => {
-    const imageUrl = req.params.imageUrl;
+app.delete('/api/delete/:id', async (req: Request, res: Response) => {
+    const id = req.params.id;
 
     try {
-        await imageService.delete(imageUrl);
+        await imageService.delete(id);
         res.sendStatus(200);
     } catch (error) {
         res.status(500).json({ error: 'Error deleting image' });

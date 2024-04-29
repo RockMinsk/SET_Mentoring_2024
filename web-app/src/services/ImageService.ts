@@ -59,16 +59,15 @@ class ImageService {
         return this.dbClient.getImagesByLabel(label);
     }
 
-    public async getTagsForImage(imageUrl: string): Promise<any> {
-        const objectPath: string = imageUrl.split('?')[0];
-        return this.dbClient.getTagsForImage(objectPath);
+    public async getTagsForImage(id: string): Promise<any> {
+        return this.dbClient.getTagsForImage(id);
     }
 
-    public async delete(imageUrl: string): Promise<any> {
-        const objectPath: string = imageUrl.split('?')[0];
+    public async delete(id: string): Promise<any> {
+        const fileName: string = await this.dbClient.getImageNameById(id);
         return Promise.all([
-            this.dbClient.delete(objectPath),
-            this.storageClient.delete(objectPath)
+            this.dbClient.delete(id),
+            this.storageClient.delete(fileName)
         ]);
     }
 

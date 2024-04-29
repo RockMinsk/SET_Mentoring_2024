@@ -6,14 +6,19 @@ window.upload = async function() {
     let fileInput = document.getElementById('file-input');
     for (let file of fileInput.files) {
         let url = URL.createObjectURL(file);
-        addImageElement(url);
 
         let formData = new FormData();
         formData.append('image', file);
-        await fetch('/api/upload', {
+
+        let response = await fetch('/api/upload', {
             method: 'POST',
             body: formData
         });
+
+        if (!response.ok) {
+            console.error(`Upload failed with status ${response.status}`);
+            return;
+        }
 
         loadImages();
     }
@@ -27,46 +32,48 @@ window.removeAll = async function() {
 }
 
 async function loadImages() {
-    let imageUrls = await fetch('/api/images').then(res => res.json());
+    let images = await fetch('/api/images').then(res => res.json());
 
     let imagesDiv = document.getElementById("images");
     while (imagesDiv.firstChild) {
         imagesDiv.removeChild(imagesDiv.firstChild);
     }
 
-    if (imageUrls.length === 0) {
+    if (images.length === 0) {
         let message = document.createElement("h3");
         message.style.textAlign = "center";
         message.innerText = "No images found";
         imagesDiv.appendChild(message);
     } else {
-        for (let imageUrl of imageUrls){
-            addImageElement(imageUrl);
+        for (let image of images){
+            if (image.id && image.url) {
+                addImageElement(image.id, image.url);
+            }
         }
     }
 };
 
 async function loadImagesByLabel(label) {
-    let imageUrls = await fetch(`/api/images/search?label=${label}`).then(res => res.json());
+    let images = await fetch(`/api/images/search?label=${label}`).then(res => res.json());
 
     let imagesDiv = document.getElementById("images");
     while (imagesDiv.firstChild) {
         imagesDiv.removeChild(imagesDiv.firstChild);
     }
 
-    if (imageUrls.length === 0) {
+    if (images.length === 0) {
         let message = document.createElement("h3");
         message.style.textAlign = "center";
         message.innerText = "No images found for the specified label";
         imagesDiv.appendChild(message);
     } else {
-        for (let imageUrl of imageUrls){
-            addImageElement(imageUrl);
+        for (let image of images){
+            addImageElement(image.id, image.url);
         }
     }
 }
 
-function addImageElement(imageUrl) {
+function addImageElement(id, imageUrl) {
     let img = document.createElement("img");
 
     img.onload = function () {
@@ -79,8 +86,9 @@ function addImageElement(imageUrl) {
         var modal = new bootstrap.Modal(document.getElementById('imageModal'));
         document.getElementById('modalImage').src = imageUrl;
 
-        const encodedImageUrl = encodeURIComponent(imageUrl);
-        let tags = await fetch(`/api/images/${encodedImageUrl}/tags`).then(res => res.json());
+        document.getElementById('modalImage').dataset.id = id;
+
+        let tags = await fetch(`/api/images/${id}/tags`).then(res => res.json());
         document.getElementById('imageTags').innerHTML = "Tags: " + tags.join(', ');
 
         modal.show()
@@ -94,8 +102,8 @@ function addImageElement(imageUrl) {
     img.style.cursor = 'pointer';
 }
 
-async function deleteImage(imageUrl) {
-    const response = await fetch(`/api/delete/${encodeURIComponent(imageUrl)}`, { method: 'DELETE' });
+async function deleteImage(id) {
+    const response = await fetch(`/api/delete/${id}`, { method: 'DELETE' });
 
     if (!response.ok) {
         console.error('Image deletion failed: ', response);
