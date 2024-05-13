@@ -1,0 +1,17 @@
+{
+  "name": "azure-sdk-test",
+  "version": "1.0.0",
+  "description": "azure sdk test",
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "jest": "^27.4.5",
+    "dotenv": "^16.4.5"
+  },
+  "dependencies": {
+    "@azure/arm-resources": "^4.2.0",
+    "@azure/identity": "^3.0.1",
+    "@azure/ms-rest-js": "^2.6.0"
+  }
+}

@@ -4,6 +4,7 @@
     "description": "Software Engineering in Test Global Mentoring Program: Advanced #2. Function application",
     "main": "src/functions/imageAnalysis.js",
     "scripts": {
+        "prestart": "npm install",
         "start": "func start",
         "test": "npm test"
     },
