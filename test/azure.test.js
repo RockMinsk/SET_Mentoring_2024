@@ -27,11 +27,11 @@ describe('Azure deployed QA resources', () => {
     const resources = await getResourcesByPrefix('qa')
 
     expect(resources).not.toHaveLength(0);
-    expect(resources).toHaveLength(17)
+    expect(resources).toHaveLength(10)
   });
 
-  test('A specific resource with prefix "qa-rg" should exist', async () => {
-    const resource = await getResourcesByPrefix('qa-rg')
+  test('A specific resource with prefix "qa-cosmosdb" should exist', async () => {
+    const resource = await getResourcesByPrefix('qa-cosmosdb')
     expect(resource).toBeDefined();
     expect(resource).toHaveLength(1)
   });
