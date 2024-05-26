@@ -135,7 +135,7 @@ resource "azurerm_windows_function_app" "func" {
       echo "Azure Functions Core Tools CLI could not be found. Trying to Install..."
       npm install -g azure-functions-core-tools@4 --unsafe-perm true
   fi
-  func azure functionapp publish ${self.name}
+  func azure functionapp publish ${self.name} --javascript --force
 EOF
     interpreter = ["/bin/bash", "-c"]
   }
