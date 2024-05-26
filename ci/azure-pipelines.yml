@@ -110,4 +110,4 @@ stages:
               cd $(Build.SourcesDirectory)/infrastructure
               ./merge-pr.sh $(organization) $(project) $(repositoryId) $(repositoryId) $(MERGE_PR_TOKEN)
             continueOnError: true
-            displayName: 'Merge PR'
+            displayName: 'Merge_PR'
