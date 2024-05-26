@@ -1,12 +1,5 @@
 variables:
-  - name: ARM_CLIENT_ID
-    value: $(azure-connection.ServicePrincipalId)
-  - name: ARM_CLIENT_SECRET
-    value: $(azure-connection.ServicePrincipalKey)
-  - name: ARM_SUBSCRIPTION_ID
-    value: $(azure-connection.SubscriptionId)
-  - name: ARM_TENANT_ID
-    value: $(azure-connection.TenantId)
+  - group: terraform-variables
 
 pr:
   branches:
@@ -25,12 +18,12 @@ stages:
             inputs:
               versionSpec: '14.x'
             displayName: 'Install Node.js'
-          - task: AzureCLI@2
-            inputs:
-              azureSubscription: 'azure-connection'
-              scriptType: 'bash'
-              scriptLocation: 'inlineScript'
-              inlineScript: 'echo "Logged into Azure CLI"'
+#          - task: AzureCLI@2
+#            inputs:
+#              azureSubscription: 'azure-connection'
+#              scriptType: 'bash'
+#              scriptLocation: 'inlineScript'
+#              inlineScript: 'echo "Logged into Azure CLI"'
           - script: |
               curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
               sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
