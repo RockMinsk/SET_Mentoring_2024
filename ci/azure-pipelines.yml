@@ -1,5 +1,13 @@
 variables:
   - group: terraform-variables
+  - name: organization
+    value: $(System.CollectionUri)
+  - name: project
+    value: $(System.TeamProject)
+  - name: repositoryId
+    value: $(Build.Repository.ID)
+  - name: pullRequestId
+    value: $(System.PullRequest.PullRequestId)
 
 pr:
   branches:
@@ -91,3 +99,15 @@ stages:
               ARM_TENANT_ID: $(ARM_TENANT_ID)
             condition: succeededOrFailed()
             displayName: 'Destroy QA'
+  - stage: Merge PR
+    jobs:
+      - job: Build
+        pool:
+          vmImage: ubuntu-latest
+        steps:
+          - checkout: self
+          - script: |
+              cd $(Build.SourcesDirectory)/infrastructure
+              ./merge-pr.sh $(organization) $(project) $(repositoryId) $(repositoryId) $(MERGE_PR_TOKEN)
+            continueOnError: true
+            displayName: 'Merge PR'
