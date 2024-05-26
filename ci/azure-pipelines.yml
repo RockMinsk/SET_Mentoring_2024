@@ -47,6 +47,9 @@ stages:
               ARM_TENANT_ID: $(ARM_TENANT_ID)
             displayName: 'Deploy to Dev'
           - script: |
+              echo "==================="
+              echo $ARM_TENANT_ID
+              echo "==================="
               cd ../test
               npm install
               npm run test:dev
