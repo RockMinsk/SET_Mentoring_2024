@@ -1,5 +1,12 @@
 variables:
-  - group: terraform-variables
+  - name: ARM_CLIENT_ID
+    value: $(azure-connection.ServicePrincipalId)
+  - name: ARM_CLIENT_SECRET
+    value: $(azure-connection.ServicePrincipalKey)
+  - name: ARM_SUBSCRIPTION_ID
+    value: $(azure-connection.SubscriptionId)
+  - name: ARM_TENANT_ID
+    value: $(azure-connection.TenantId)
 
 pr:
   branches:
@@ -18,12 +25,12 @@ stages:
             inputs:
               versionSpec: '14.x'
             displayName: 'Install Node.js'
-          - task: AzureCLI@2
-            inputs:
-              azureSubscription: 'azure-connection'
-              scriptType: 'bash'
-              scriptLocation: 'inlineScript'
-              inlineScript: 'echo "Logged into Azure CLI"'
+#          - task: AzureCLI@2
+#            inputs:
+#              azureSubscription: 'azure-connection'
+#              scriptType: 'bash'
+#              scriptLocation: 'inlineScript'
+#              inlineScript: 'echo "Logged into Azure CLI"'
           - script: |
               curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
               sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
@@ -33,6 +40,11 @@ stages:
               cd ./infrastructure
               chmod +x ./deploy.sh
               ./deploy.sh dev
+            env:
+              ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+              ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+              ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
+              ARM_TENANT_ID: $(ARM_TENANT_ID)
             displayName: 'Deploy to Dev'
           - script: |
               cd ../test
@@ -43,6 +55,11 @@ stages:
               cd ../infrastructure
               chmod +x ./destroy.sh
               ./destroy.sh dev
+            env:
+              ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+              ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+              ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
+              ARM_TENANT_ID: $(ARM_TENANT_ID)
             displayName: 'Destroy Dev'
   - stage: QA
     jobs:
@@ -64,6 +81,11 @@ stages:
               cd ./infrastructure
               chmod +x ./deploy.sh
               ./deploy.sh qa
+            env:
+              ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+              ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+              ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
+              ARM_TENANT_ID: $(ARM_TENANT_ID)
             displayName: 'Deploy to QA'
           - script: |
               cd ../test
@@ -74,4 +96,9 @@ stages:
               cd ../infrastructure
               chmod +x ./destroy.sh
               ./destroy.sh qa
+            env:
+              ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+              ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+              ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
+              ARM_TENANT_ID: $(ARM_TENANT_ID)
             displayName: 'Destroy QA'
