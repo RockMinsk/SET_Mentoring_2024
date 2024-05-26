@@ -7,3 +7,4 @@
     - ARM_CLIENT_SECRET
     - ARM_SUBSCRIPTION_ID
     - ARM_TENANT_ID
+- Grant permissions in the pipeline to use variables from the variable group
