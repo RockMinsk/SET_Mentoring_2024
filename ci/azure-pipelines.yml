@@ -37,6 +37,9 @@ stages:
               sudo apt-get update && sudo apt-get install terraform
             displayName: 'Install Terraform'
           - script: |
+              echo "==================="
+              echo $ARM_TENANT_ID
+              echo "==================="
               cd ./infrastructure
               chmod +x ./deploy.sh
               ./deploy.sh dev
@@ -47,9 +50,6 @@ stages:
               ARM_TENANT_ID: $(ARM_TENANT_ID)
             displayName: 'Deploy to Dev'
           - script: |
-              echo "==================="
-              echo $ARM_TENANT_ID
-              echo "==================="
               cd ../test
               npm install
               npm run test:dev
