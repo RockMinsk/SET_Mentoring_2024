@@ -35,28 +35,33 @@ stages:
               cd $(Build.SourcesDirectory)/infrastructure
               chmod +x ./deploy.sh
               ./deploy.sh dev
+            displayName: 'Deploy to Dev'
             env:
               ARM_CLIENT_ID: $(ARM_CLIENT_ID)
               ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
               ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
               ARM_TENANT_ID: $(ARM_TENANT_ID)
-            displayName: 'Deploy to Dev'
           - script: |
               cd $(Build.SourcesDirectory)/test
               npm install
               npm run test:dev
             displayName: 'Run Dev infrastructure tests'
+            env:
+              ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+              ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+              ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
+              ARM_TENANT_ID: $(ARM_TENANT_ID)
           - script: |
               cd $(Build.SourcesDirectory)/infrastructure
               chmod +x ./destroy.sh
               ./destroy.sh dev
+            displayName: 'Destroy Dev'
             env:
               ARM_CLIENT_ID: $(ARM_CLIENT_ID)
               ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
               ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
               ARM_TENANT_ID: $(ARM_TENANT_ID)
             condition: succeededOrFailed()
-            displayName: 'Destroy Dev'
   - stage: QA
     jobs:
       - job: Build
@@ -77,28 +82,33 @@ stages:
               cd $(Build.SourcesDirectory)/infrastructure
               chmod +x ./deploy.sh
               ./deploy.sh qa
+            displayName: 'Deploy to QA'
             env:
               ARM_CLIENT_ID: $(ARM_CLIENT_ID)
               ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
               ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
               ARM_TENANT_ID: $(ARM_TENANT_ID)
-            displayName: 'Deploy to QA'
           - script: |
               cd $(Build.SourcesDirectory)/test
               npm install
               npm run test:qa
             displayName: 'Run QA infrastructure tests'
+            env:
+              ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+              ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+              ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
+              ARM_TENANT_ID: $(ARM_TENANT_ID)
           - script: |
               cd $(Build.SourcesDirectory)/infrastructure
               chmod +x ./destroy.sh
               ./destroy.sh qa
+            displayName: 'Destroy QA'
             env:
               ARM_CLIENT_ID: $(ARM_CLIENT_ID)
               ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
               ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
               ARM_TENANT_ID: $(ARM_TENANT_ID)
             condition: succeededOrFailed()
-            displayName: 'Destroy QA'
   - stage: Merge_PR
     jobs:
       - job: Build
@@ -109,5 +119,5 @@ stages:
           - script: |
               cd $(Build.SourcesDirectory)/infrastructure
               ./merge-pr.sh $(organization) $(project) $(repositoryId) $(repositoryId) $(MERGE_PR_TOKEN)
-            continueOnError: true
             displayName: 'Merge PR'
+            continueOnError: true
