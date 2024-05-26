@@ -21,7 +21,7 @@ async function getResourcesByPrefix(prefix) {
   return allResources.filter(resource => resource.name.startsWith(prefix));
 }
 
-describe('Azure deployed QA resources', () => {
+describe('QA: Azure deployed QA resources', () => {
 
   test('All resources with prefix "qa" should exist', async () => {
     const resources = await getResourcesByPrefix('qa')
@@ -37,7 +37,7 @@ describe('Azure deployed QA resources', () => {
   });
 });
 
-describe('Azure deployed Dev resources', () => {
+describe('DEV: Azure deployed Dev resources', () => {
 
   test('All resources with prefix "dev" should exist', async () => {
     const resources = await getResourcesByPrefix('dev')
@@ -53,7 +53,7 @@ describe('Azure deployed Dev resources', () => {
   });
 });
 
-describe('Azure deployed Prod resources', () => {
+describe('PROD: Azure deployed Prod resources', () => {
 
   test('All resources with prefix "prod" should exist', async () => {
     const resources = await getResourcesByPrefix('prod')

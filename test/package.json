@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "description": "azure sdk test",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "test:qa": "jest --testNamePattern=QA",
+    "test:dev": "jest --testNamePattern=DEV",
+    "test:prod": "jest --testNamePattern=PROD"
   },
   "devDependencies": {
     "jest": "^27.4.5",
