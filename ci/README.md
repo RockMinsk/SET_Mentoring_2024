@@ -1,8 +1,9 @@
 # Software Engineering in Test Global Mentoring Program: Advanced #2
 
 ## Preconditions:
-- To make pipeline workable, save the following variables in the `Pipelines -> Library -> Variable groups`:
-    - clientId
-    - clientSecret
-    - subscriptionId
-    - tenantId
+- Create a new group `terraform-variables` in the `Pipelines -> Library -> Variable groups`;
+- Add the following variables in the group:
+    - ARM_CLIENT_ID
+    - ARM_CLIENT_SECRET
+    - ARM_SUBSCRIPTION_ID
+    - ARM_TENANT_ID
