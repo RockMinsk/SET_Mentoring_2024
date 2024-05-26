@@ -21,17 +21,19 @@ stages:
               sudo apt-get update && sudo apt-get install terraform
             displayName: 'Install Terraform'
           - script: |
-              chmod +x ./infrastructure/deploy.sh
-              ./infrastructure/deploy.sh dev
+              cd ./infrastructure
+              chmod +x ./deploy.sh
+              ./deploy.sh dev
             displayName: 'Deploy to Dev'
           - script: |
-              cd ./test
+              cd ../test
               npm install
               npm run test:dev
             displayName: 'Run Dev infrastructure tests'
           - script: |
-              chmod +x ./infrastructure/destroy.sh
-              ./infrastructure/destroy.sh dev
+              cd ../infrastructure
+              chmod +x ./destroy.sh
+              ./destroy.sh dev
             displayName: 'Destroy Dev'
   - stage: QA
     jobs:
@@ -50,15 +52,17 @@ stages:
               sudo apt-get update && sudo apt-get install terraform
             displayName: 'Install Terraform'
           - script: |
-              chmod +x ./infrastructure/deploy.sh
-              ./infrastructure/deploy.sh qa
+              cd ./infrastructure
+              chmod +x ./deploy.sh
+              ./deploy.sh qa
             displayName: 'Deploy to QA'
           - script: |
-              cd ./test
+              cd ../test
               npm install
               npm run test:qa
             displayName: 'Run QA infrastructure tests'
           - script: |
-              chmod +x ./infrastructure/destroy.sh
-              ./infrastructure/destroy.sh qa
+              cd ../infrastructure
+              chmod +x ./destroy.sh
+              ./destroy.sh qa
             displayName: 'Destroy QA'
