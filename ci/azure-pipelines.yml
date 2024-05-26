@@ -27,11 +27,6 @@ stages:
               cd ./infrastructure
               chmod +x ./deploy.sh
               ./deploy.sh dev
-            env:
-              ARM_CLIENT_ID: $(ARM_CLIENT_ID)
-              ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
-              ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
-              ARM_TENANT_ID: $(ARM_TENANT_ID)
             displayName: 'Deploy to Dev'
           - script: |
               cd ../test
@@ -42,11 +37,6 @@ stages:
               cd ../infrastructure
               chmod +x ./destroy.sh
               ./destroy.sh dev
-            env:
-              ARM_CLIENT_ID: $(ARM_CLIENT_ID)
-              ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
-              ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
-              ARM_TENANT_ID: $(ARM_TENANT_ID)
             condition: succeededOrFailed()
             displayName: 'Destroy Dev'
   - stage: QA
@@ -69,11 +59,6 @@ stages:
               cd ./infrastructure
               chmod +x ./deploy.sh
               ./deploy.sh qa
-            env:
-              ARM_CLIENT_ID: $(ARM_CLIENT_ID)
-              ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
-              ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
-              ARM_TENANT_ID: $(ARM_TENANT_ID)
             displayName: 'Deploy to QA'
           - script: |
               cd ../test
@@ -84,10 +69,5 @@ stages:
               cd ../infrastructure
               chmod +x ./destroy.sh
               ./destroy.sh qa
-            env:
-              ARM_CLIENT_ID: $(ARM_CLIENT_ID)
-              ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
-              ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
-              ARM_TENANT_ID: $(ARM_TENANT_ID)
             condition: succeededOrFailed()
             displayName: 'Destroy QA'
