@@ -1,0 +1,42 @@
+trigger:
+  branches:
+    include:
+      - develop
+  paths:
+    exclude:
+      - '**/*.md'
+
+pr:
+  branches:
+    include:
+      - develop
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+  - checkout: self
+
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '14.x'
+    displayName: 'Install Node.js'
+
+  - task: ms-devlabs.custom-terraform-tasks.terraform-installer-task.TerraformInstaller@0
+    displayName: 'Install Terraform'
+
+  - script: |
+      chmod +x ./infrastructure/deploy.sh
+      ./infrastructure/deploy.sh dev
+    displayName: 'Deploy to Dev'
+
+  - script: |
+      cd ./test
+      npm install
+      npm run test:dev
+    displayName: 'Run Dev tests'
+
+  - script: |
+      chmod +x ./infrastructure/destroy.sh
+      ./infrastructure/destroy.sh dev
+    displayName: 'Destroy Dev'
