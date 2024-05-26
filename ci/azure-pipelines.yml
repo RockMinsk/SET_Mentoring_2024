@@ -38,6 +38,8 @@ stages:
             displayName: 'Install Terraform'
           - script: |
               echo "==================="
+              echo $ARM_CLIENT_ID
+              echo $ARM_SUBSCRIPTION_ID
               echo $ARM_TENANT_ID
               echo "==================="
               cd ./infrastructure
