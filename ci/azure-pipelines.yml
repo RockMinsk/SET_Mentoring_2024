@@ -1,15 +1,7 @@
-trigger:
-  branches:
-    include:
-      - develop
-  paths:
-    exclude:
-      - '**/*.md'
-
 pr:
   branches:
     include:
-      - develop
+      - 'develop'
 
 stages:
   - stage: Dev
