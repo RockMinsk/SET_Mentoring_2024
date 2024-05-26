@@ -130,7 +130,7 @@ resource "azurerm_cognitive_account" "cv" {
   resource_group_name = azurerm_resource_group.rg.name
   kind                = "ComputerVision"
   # NOTE. Only one free account (F0) available for subscription
-  sku_name = "F0"
+  sku_name = "S1"
 
   tags = {
     ENV = "Test"
