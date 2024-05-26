@@ -99,7 +99,7 @@ stages:
               ARM_TENANT_ID: $(ARM_TENANT_ID)
             condition: succeededOrFailed()
             displayName: 'Destroy QA'
-  - stage: Merge PR
+  - stage: Merge_PR
     jobs:
       - job: Build
         pool:
@@ -110,4 +110,4 @@ stages:
               cd $(Build.SourcesDirectory)/infrastructure
               ./merge-pr.sh $(organization) $(project) $(repositoryId) $(repositoryId) $(MERGE_PR_TOKEN)
             continueOnError: true
-            displayName: 'Merge_PR'
+            displayName: 'Merge PR'
