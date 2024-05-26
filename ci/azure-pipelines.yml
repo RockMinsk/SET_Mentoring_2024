@@ -18,23 +18,12 @@ stages:
             inputs:
               versionSpec: '14.x'
             displayName: 'Install Node.js'
-#          - task: AzureCLI@2
-#            inputs:
-#              azureSubscription: 'azure-connection'
-#              scriptType: 'bash'
-#              scriptLocation: 'inlineScript'
-#              inlineScript: 'echo "Logged into Azure CLI"'
           - script: |
               curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
               sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
               sudo apt-get update && sudo apt-get install terraform
             displayName: 'Install Terraform'
           - script: |
-              echo "==================="
-              echo $ARM_CLIENT_ID
-              echo $ARM_SUBSCRIPTION_ID
-              echo $ARM_TENANT_ID
-              echo "==================="
               cd ./infrastructure
               chmod +x ./deploy.sh
               ./deploy.sh dev
@@ -58,6 +47,7 @@ stages:
               ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
               ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
               ARM_TENANT_ID: $(ARM_TENANT_ID)
+            condition: succeededOrFailed()
             displayName: 'Destroy Dev'
   - stage: QA
     jobs:
@@ -99,4 +89,5 @@ stages:
               ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
               ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
               ARM_TENANT_ID: $(ARM_TENANT_ID)
+            condition: succeededOrFailed()
             displayName: 'Destroy QA'
