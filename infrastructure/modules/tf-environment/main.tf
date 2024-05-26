@@ -75,6 +75,8 @@ resource "azurerm_cosmosdb_account" "cosmosdb" {
   resource_group_name = azurerm_resource_group.rg.name
   offer_type          = "Standard"
   kind                = "GlobalDocumentDB"
+  # NOTE. Only one free account (F0) available for subscription
+  free_tier_enabled   = true
 
   consistency_policy {
     consistency_level       = "BoundedStaleness"
@@ -128,7 +130,7 @@ resource "azurerm_cognitive_account" "cv" {
   resource_group_name = azurerm_resource_group.rg.name
   kind                = "ComputerVision"
   # NOTE. Only one free account (F0) available for subscription
-  sku_name = "S1"
+  sku_name = "F0"
 
   tags = {
     ENV = "Test"
