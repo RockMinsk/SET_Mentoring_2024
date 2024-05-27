@@ -18,5 +18,6 @@ else
   exit 1
 fi
 
-APP_URL=$(terraform output -raw webapp_url)
-echo "##vso[task.setvariable variable=appUrl]$APP_URL"
+OUTPUT=$(terraform output -raw webapp_url)
+APP_URL=${OUTPUT#*=}
+echo "##vso[task.setvariable variable=APP_URL]$APP_URL"
