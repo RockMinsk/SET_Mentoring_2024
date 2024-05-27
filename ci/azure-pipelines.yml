@@ -52,6 +52,9 @@ stages:
               ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
               ARM_TENANT_ID: $(ARM_TENANT_ID)
           - script: |
+              echo "========APP_URL========"
+              echo $APP_URL
+              echo "======================="
               cd $(Build.SourcesDirectory)/tests
               npm install
               npm run test:api
