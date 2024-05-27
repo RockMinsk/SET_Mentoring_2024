@@ -4,7 +4,6 @@ if [ "$1" == "dev" ]; then
   terraform workspace select dev || terraform workspace new dev
   terraform init
   terraform apply -auto-approve -var-file='tf-dev/terraform.tfvars'
-  terraform output
 elif [ "$1" == "qa" ]; then
   terraform workspace select qa || terraform workspace new qa
   terraform init
