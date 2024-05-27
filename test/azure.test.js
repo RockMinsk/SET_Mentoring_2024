@@ -6,10 +6,10 @@ require("dotenv").config();
 let client;
 
 beforeAll(async () => {
-  const clientId = process.env['AZURE_CLIENT_ID']
-  const clientSecret = process.env['AZURE_CLIENT_SECRET']
-  const tenantId = process.env['AZURE_TENANT_ID']
-  const subscriptionId = process.env['AZURE_SUBSCRIPTION_ID']
+  const clientId = process.env['ARM_CLIENT_ID']
+  const clientSecret = process.env['ARM_CLIENT_SECRET']
+  const tenantId = process.env['ARM_TENANT_ID']
+  const subscriptionId = process.env['ARM_SUBSCRIPTION_ID']
 
   const credentials = new identity.ClientSecretCredential(tenantId, clientId, clientSecret);
 
