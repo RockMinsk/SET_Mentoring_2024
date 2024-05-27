@@ -42,7 +42,7 @@ stages:
               ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
               ARM_TENANT_ID: $(ARM_TENANT_ID)
           - script: |
-              cd $(Build.SourcesDirectory)/test
+              cd $(Build.SourcesDirectory)/tests
               npm install
               npm run test:infra-dev
             displayName: 'DEV: infra tests'
@@ -94,7 +94,7 @@ stages:
               ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
               ARM_TENANT_ID: $(ARM_TENANT_ID)
           - script: |
-              cd $(Build.SourcesDirectory)/test
+              cd $(Build.SourcesDirectory)/tests
               npm install
               npm run test:infra-qa
             displayName: 'QA: infra tests'
