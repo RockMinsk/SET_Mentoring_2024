@@ -35,17 +35,26 @@ stages:
               cd $(Build.SourcesDirectory)/infrastructure
               chmod +x ./deploy.sh
               ./deploy.sh dev
-            displayName: 'Deploy to Dev'
+            displayName: 'DEV: deploy'
             env:
               ARM_CLIENT_ID: $(ARM_CLIENT_ID)
               ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
               ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
               ARM_TENANT_ID: $(ARM_TENANT_ID)
           - script: |
+              sudo apt-get update
+              sudo apt-get -y install jq
+              terraform workspace select dev
+              terraform show -json > outputs.json
+              APP_URL=$(cat outputs.json | jq -r '.values.outputs.webapp_url.value')
+              echo "##vso[task.setvariable variable=appUrl]$APP_URL"
+            displayName: 'DEV: get Webapp URL'
+            continueOnError: true
+          - script: |
               cd $(Build.SourcesDirectory)/test
               npm install
               npm run test:dev
-            displayName: 'Run Dev infrastructure tests'
+            displayName: 'DEV: infra tests'
             env:
               ARM_CLIENT_ID: $(ARM_CLIENT_ID)
               ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
@@ -55,7 +64,7 @@ stages:
               cd $(Build.SourcesDirectory)/infrastructure
               chmod +x ./destroy.sh
               ./destroy.sh dev
-            displayName: 'Destroy Dev'
+            displayName: 'DEV: destroy'
             env:
               ARM_CLIENT_ID: $(ARM_CLIENT_ID)
               ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
@@ -82,17 +91,26 @@ stages:
               cd $(Build.SourcesDirectory)/infrastructure
               chmod +x ./deploy.sh
               ./deploy.sh qa
-            displayName: 'Deploy to QA'
+            displayName: 'QA: deploy'
             env:
               ARM_CLIENT_ID: $(ARM_CLIENT_ID)
               ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
               ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
               ARM_TENANT_ID: $(ARM_TENANT_ID)
           - script: |
+              sudo apt-get update
+              sudo apt-get -y install jq
+              terraform workspace select qa
+              terraform show -json > outputs.json
+              APP_URL=$(cat outputs.json | jq -r '.values.outputs.webapp_url.value')
+              echo "##vso[task.setvariable variable=appUrl]$APP_URL"
+            displayName: 'QA: get Webapp URL'
+            continueOnError: true
+          - script: |
               cd $(Build.SourcesDirectory)/test
               npm install
               npm run test:qa
-            displayName: 'Run QA infrastructure tests'
+            displayName: 'QA: infra tests'
             env:
               ARM_CLIENT_ID: $(ARM_CLIENT_ID)
               ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
@@ -102,7 +120,7 @@ stages:
               cd $(Build.SourcesDirectory)/infrastructure
               chmod +x ./destroy.sh
               ./destroy.sh qa
-            displayName: 'Destroy QA'
+            displayName: 'QA: destroy'
             env:
               ARM_CLIENT_ID: $(ARM_CLIENT_ID)
               ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
@@ -117,7 +135,7 @@ stages:
         steps:
           - checkout: self
           - script: |
-              cd $(Build.SourcesDirectory)/infrastructure
-              ./merge-pr.sh $(organization) $(project) $(repositoryId) $(repositoryId) $(MERGE_PR_TOKEN)
+              cd $(Build.SourcesDirectory)/ci
+              ./merge-pr.sh $(organization) $(project) $(repositoryId) $(pullRequestId) $(MERGE_PR_TOKEN)
             displayName: 'Merge PR'
             continueOnError: true
