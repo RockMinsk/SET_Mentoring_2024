@@ -128,6 +128,7 @@ stages:
           - checkout: self
           - script: |
               cd $(Build.SourcesDirectory)/ci
+              chmod +x ./merge-pr.sh
               ./merge-pr.sh $(organization) $(project) $(repositoryId) $(pullRequestId) $(MERGE_PR_TOKEN)
             displayName: 'Merge PR'
             continueOnError: true
