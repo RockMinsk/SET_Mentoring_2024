@@ -16,3 +16,6 @@ else
   echo "Usage: $0 {dev|qa|prod}"
   exit 1
 fi
+
+APP_URL=$(terraform output -raw webapp_url)
+echo "##vso[task.setvariable variable=appUrl]$APP_URL"

@@ -4,13 +4,15 @@
   "description": "azure sdk test",
   "scripts": {
     "test": "jest",
-    "test:qa": "jest --testNamePattern=QA",
-    "test:dev": "jest --testNamePattern=DEV",
-    "test:prod": "jest --testNamePattern=PROD"
+    "test:infra-qa": "jest azure.infra.test.js --testNamePattern=QA",
+    "test:infra-dev": "jest azure.infra.test.js --testNamePattern=DEV",
+    "test:infra-prod": "jest azure.infra.test.js --testNamePattern=PROD",
+    "test:api": "jest azure.api.test.js"
   },
   "devDependencies": {
+    "dotenv": "^16.4.5",
     "jest": "^27.4.5",
-    "dotenv": "^16.4.5"
+    "nock": "^13.5.4"
   },
   "dependencies": {
     "@azure/arm-resources": "^4.2.0",

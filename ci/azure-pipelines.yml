@@ -42,24 +42,20 @@ stages:
               ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
               ARM_TENANT_ID: $(ARM_TENANT_ID)
           - script: |
-              sudo apt-get update
-              sudo apt-get -y install jq
-              terraform workspace select dev
-              terraform show -json > outputs.json
-              APP_URL=$(cat outputs.json | jq -r '.values.outputs.webapp_url.value')
-              echo "##vso[task.setvariable variable=appUrl]$APP_URL"
-            displayName: 'DEV: get Webapp URL'
-            continueOnError: true
-          - script: |
               cd $(Build.SourcesDirectory)/test
               npm install
-              npm run test:dev
+              npm run test:infra-dev
             displayName: 'DEV: infra tests'
             env:
               ARM_CLIENT_ID: $(ARM_CLIENT_ID)
               ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
               ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
               ARM_TENANT_ID: $(ARM_TENANT_ID)
+          - script: |
+              npm run test:api
+            displayName: 'DEV: API tests'
+            env:
+              APP_URL: $(APP_URL)
           - script: |
               cd $(Build.SourcesDirectory)/infrastructure
               chmod +x ./destroy.sh
@@ -98,24 +94,20 @@ stages:
               ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
               ARM_TENANT_ID: $(ARM_TENANT_ID)
           - script: |
-              sudo apt-get update
-              sudo apt-get -y install jq
-              terraform workspace select qa
-              terraform show -json > outputs.json
-              APP_URL=$(cat outputs.json | jq -r '.values.outputs.webapp_url.value')
-              echo "##vso[task.setvariable variable=appUrl]$APP_URL"
-            displayName: 'QA: get Webapp URL'
-            continueOnError: true
-          - script: |
               cd $(Build.SourcesDirectory)/test
               npm install
-              npm run test:qa
+              npm run test:infra-qa
             displayName: 'QA: infra tests'
             env:
               ARM_CLIENT_ID: $(ARM_CLIENT_ID)
               ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
               ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
               ARM_TENANT_ID: $(ARM_TENANT_ID)
+          - script: |
+              npm run test:api
+            displayName: 'QA: API tests'
+            env:
+              APP_URL: $(APP_URL)
 #          - script: |
 #              cd $(Build.SourcesDirectory)/infrastructure
 #              chmod +x ./destroy.sh
