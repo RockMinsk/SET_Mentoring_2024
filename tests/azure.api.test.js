@@ -7,10 +7,6 @@ const FormData = require('form-data');
 
 const baseURL = process.env.APP_URL;
 
-console.log('===============================');
-console.log('APP_URL:', process.env.APP_URL);
-console.log('===============================');
-
 const file = fs.createReadStream('./test_image.png');
 
 const mockImages = [
