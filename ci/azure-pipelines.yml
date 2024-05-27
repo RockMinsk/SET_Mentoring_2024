@@ -52,6 +52,8 @@ stages:
               ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
               ARM_TENANT_ID: $(ARM_TENANT_ID)
           - script: |
+              cd $(Build.SourcesDirectory)/tests
+              npm install
               npm run test:api
             displayName: 'DEV: API tests'
             env:
@@ -104,6 +106,8 @@ stages:
               ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
               ARM_TENANT_ID: $(ARM_TENANT_ID)
           - script: |
+              cd $(Build.SourcesDirectory)/tests
+              npm install
               npm run test:api
             displayName: 'QA: API tests'
             env:
