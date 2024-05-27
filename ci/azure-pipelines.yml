@@ -112,17 +112,17 @@ stages:
             displayName: 'QA: API tests'
             env:
               APP_URL: $(APP_URL)
-#          - script: |
-#              cd $(Build.SourcesDirectory)/infrastructure
-#              chmod +x ./destroy.sh
-#              ./destroy.sh qa
-#            displayName: 'QA: destroy'
-#            env:
-#              ARM_CLIENT_ID: $(ARM_CLIENT_ID)
-#              ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
-#              ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
-#              ARM_TENANT_ID: $(ARM_TENANT_ID)
-#            condition: succeededOrFailed()
+          - script: |
+              cd $(Build.SourcesDirectory)/infrastructure
+              chmod +x ./destroy.sh
+              ./destroy.sh qa
+            displayName: 'QA: destroy'
+            env:
+              ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+              ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+              ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
+              ARM_TENANT_ID: $(ARM_TENANT_ID)
+            condition: succeededOrFailed()
   - stage: Merge_PR
     jobs:
       - job: Build
