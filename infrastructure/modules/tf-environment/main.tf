@@ -25,6 +25,7 @@ resource "null_resource" "docker_push" {
   provisioner "local-exec" {
     command     = <<EOF
     set -e && \
+    az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID && \
     docker build -t ${azurerm_container_registry.acr.login_server}/${var.acr_image_name} ../web-app/. && \
     az acr login --name ${azurerm_container_registry.acr.name} && \
     docker push ${azurerm_container_registry.acr.login_server}/${var.acr_image_name}
@@ -130,7 +131,7 @@ resource "azurerm_cognitive_account" "cv" {
   resource_group_name = azurerm_resource_group.rg.name
   kind                = "ComputerVision"
   # NOTE. Only one free account (F0) available for subscription
-  sku_name = "F0"
+  sku_name = "S1"
 
   tags = {
     ENV = "Test"
