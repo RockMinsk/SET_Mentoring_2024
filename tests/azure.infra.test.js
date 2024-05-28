@@ -6,10 +6,10 @@ require("dotenv").config();
 let client;
 
 beforeAll(async () => {
-  const clientId = process.env['AZURE_CLIENT_ID']
-  const clientSecret = process.env['AZURE_CLIENT_SECRET']
-  const tenantId = process.env['AZURE_TENANT_ID']
-  const subscriptionId = process.env['AZURE_SUBSCRIPTION_ID']
+  const clientId = process.env['ARM_CLIENT_ID']
+  const clientSecret = process.env['ARM_CLIENT_SECRET']
+  const tenantId = process.env['ARM_TENANT_ID']
+  const subscriptionId = process.env['ARM_SUBSCRIPTION_ID']
 
   const credentials = new identity.ClientSecretCredential(tenantId, clientId, clientSecret);
 
@@ -21,7 +21,7 @@ async function getResourcesByPrefix(prefix) {
   return allResources.filter(resource => resource.name.startsWith(prefix));
 }
 
-describe('Azure deployed QA resources', () => {
+describe('QA: Azure deployed QA resources', () => {
 
   test('All resources with prefix "qa" should exist', async () => {
     const resources = await getResourcesByPrefix('qa')
@@ -37,7 +37,7 @@ describe('Azure deployed QA resources', () => {
   });
 });
 
-describe('Azure deployed Dev resources', () => {
+describe('DEV: Azure deployed Dev resources', () => {
 
   test('All resources with prefix "dev" should exist', async () => {
     const resources = await getResourcesByPrefix('dev')
@@ -53,7 +53,7 @@ describe('Azure deployed Dev resources', () => {
   });
 });
 
-describe('Azure deployed Prod resources', () => {
+describe('PROD: Azure deployed Prod resources', () => {
 
   test('All resources with prefix "prod" should exist', async () => {
     const resources = await getResourcesByPrefix('prod')

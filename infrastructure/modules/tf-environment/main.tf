@@ -25,6 +25,7 @@ resource "null_resource" "docker_push" {
   provisioner "local-exec" {
     command     = <<EOF
     set -e && \
+    az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID && \
     docker build -t ${azurerm_container_registry.acr.login_server}/${var.acr_image_name} ../web-app/. && \
     az acr login --name ${azurerm_container_registry.acr.name} && \
     docker push ${azurerm_container_registry.acr.login_server}/${var.acr_image_name}
@@ -75,6 +76,8 @@ resource "azurerm_cosmosdb_account" "cosmosdb" {
   resource_group_name = azurerm_resource_group.rg.name
   offer_type          = "Standard"
   kind                = "GlobalDocumentDB"
+  # NOTE. Only one free account (F0) available for subscription
+  free_tier_enabled   = true
 
   consistency_policy {
     consistency_level       = "BoundedStaleness"

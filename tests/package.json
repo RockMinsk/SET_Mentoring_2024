@@ -1,0 +1,22 @@
+{
+  "name": "azure-sdk-test",
+  "version": "1.0.0",
+  "description": "azure sdk test",
+  "scripts": {
+    "test": "jest",
+    "test:infra-qa": "jest azure.infra.test.js --testNamePattern=QA",
+    "test:infra-dev": "jest azure.infra.test.js --testNamePattern=DEV",
+    "test:infra-prod": "jest azure.infra.test.js --testNamePattern=PROD",
+    "test:api": "jest azure.api.test.js"
+  },
+  "devDependencies": {
+    "dotenv": "^16.4.5",
+    "jest": "^27.4.5",
+    "nock": "^13.5.4"
+  },
+  "dependencies": {
+    "@azure/arm-resources": "^4.2.0",
+    "@azure/identity": "^3.0.1",
+    "@azure/ms-rest-js": "^2.6.0"
+  }
+}
