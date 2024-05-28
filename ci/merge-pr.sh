@@ -1,4 +1,5 @@
 #!/bin/bash
+# TODO [KS]: script implementation is in progress
 
 # NOTE. Define variables
 organization=$1

@@ -123,16 +123,16 @@ stages:
               ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
               ARM_TENANT_ID: $(ARM_TENANT_ID)
             condition: succeededOrFailed()
-  - stage: Merge_PR
-    jobs:
-      - job: Build
-        pool:
-          vmImage: ubuntu-latest
-        steps:
-          - checkout: self
-          - script: |
-              cd $(Build.SourcesDirectory)/ci
-              chmod +x ./merge-pr.sh
-              ./merge-pr.sh $(organization) $(project) $(repositoryId) $(pullRequestId) $(MERGE_PR_TOKEN)
-            displayName: 'Merge PR'
-            continueOnError: true
+#  - stage: Merge_PR
+#    jobs:
+#      - job: Build
+#        pool:
+#          vmImage: ubuntu-latest
+#        steps:
+#          - checkout: self
+#          - script: |
+#              cd $(Build.SourcesDirectory)/ci
+#              chmod +x ./merge-pr.sh
+#              ./merge-pr.sh $(organization) $(project) $(repositoryId) $(pullRequestId) $(MERGE_PR_TOKEN)
+#            displayName: 'Merge PR'
+#            continueOnError: true
